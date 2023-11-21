@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Помощник ОКТО</string>
+
+    <!-- Главное меню -->
+    <string name="menu_ping">Соединение с сервером</string>
+    <string name="menu_files">Взаимодействие с файлами</string>
+    <string name="menu_camera">Взаимодействие с камерами</string>
+    <string name="menu_settings">Настройки приложения</string>
+
+    <!-- Активити камеры -->
+    <string name="camera_text">Текстовое поле</string>
+    <string name="camera_button_1">Камера №1</string>
+    <string name="camera_button_2">Камера №2</string>
+
+    <!-- Активити файлы -->
+    <string name="files_text">Текстовое поле</string>
+    <string name="files_button_upload">Отправить файлы</string>
+    <string name="files_button_delete">Удалить файлы</string>
+
+    <!-- Антивити пинг -->
+    <string name="ping_text">Текстовое поле</string>
+    <string name="ping_button_start">Запустить проверку</string>
+    <string name="ping_button_end">Остановить проверку</string>
+
+    <!-- Активити настройки -->
+    <string name="settings_edit_text">Введите данные</string>
+    <string name="settings_terminal_name">Имя терминала</string>
+    <string name="settings_camera_1">ip-адрес камеры 1</string>
+    <string name="settings_camera_2">ip-адрес камеры 2</string>
+    <string name="settings_auto_ping_flag">Авто-проверка пинга</string>
+    <string name="settings_button_save">Сохранить настройки</string>
+
+</resources>
