@@ -8,17 +8,17 @@
     <string name="menu_settings">Настройки приложения</string>
 
     <!-- Активити камеры -->
-    <string name="camera_text">Текстовое поле</string>
+    <string name="camera_text">Просмотр камеры</string>
     <string name="camera_button_1">Камера №1</string>
     <string name="camera_button_2">Камера №2</string>
 
     <!-- Активити файлы -->
-    <string name="files_text">Текстовое поле</string>
+    <string name="files_text">Взаимодействие с файлами</string>
     <string name="files_button_upload">Отправить файлы</string>
     <string name="files_button_delete">Удалить файлы</string>
 
     <!-- Антивити пинг -->
-    <string name="ping_text">Текстовое поле</string>
+    <string name="ping_text">Проверка доступа сервера ОКТО</string>
     <string name="ping_button_start">Запустить проверку</string>
     <string name="ping_button_end">Остановить проверку</string>
 
@@ -28,6 +28,7 @@
     <string name="settings_camera_1">ip-адрес камеры 1</string>
     <string name="settings_camera_2">ip-адрес камеры 2</string>
     <string name="settings_auto_ping_flag">Авто-проверка пинга</string>
+    <string name="settings_quantity_in_file">Количество кодов в файле</string>
     <string name="settings_button_save">Сохранить настройки</string>
 
 </resources>

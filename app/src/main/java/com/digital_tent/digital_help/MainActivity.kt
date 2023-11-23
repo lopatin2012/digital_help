@@ -1,14 +1,20 @@
 package com.digital_tent.digital_help
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
+    private val permissionWriteInStorage = 123
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // Запуск проверки доступа для взаимодействия с файлами.
+        requestWritePermission()
     }
 
     // Запустить активити с проверкой доступа.
@@ -33,5 +39,12 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, CameraActivity::class.java)
         startActivity(intent)
     }
-
+    // Проверка доступа на запись/чтение файлов.
+    private fun requestWritePermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            permissionWriteInStorage
+        )
+    }
 }

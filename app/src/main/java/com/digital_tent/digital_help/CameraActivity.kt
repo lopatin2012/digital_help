@@ -18,11 +18,11 @@ class CameraActivity : AppCompatActivity() {
         val webViewCamera: WebView = findViewById(R.id.camera_web_view)
         // Выполнить подключение к камере.
         buttonCamera1.setOnClickListener {
-            val url = "http://" + globalVariables.getCameraIp1()
+            val url = "http://" + globalVariables.getCameraIp1() + "/monitor"
             webViewCamera.loadUrl(url)
         }
         buttonCamera2.setOnClickListener {
-            val url = "http://" + globalVariables.getCameraIp2()
+            val url = "http://" + globalVariables.getCameraIp2() + "/monitor"
             webViewCamera.loadUrl(url)
         }
     }

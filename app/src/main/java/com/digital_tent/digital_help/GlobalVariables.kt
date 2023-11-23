@@ -55,4 +55,22 @@ class GlobalVariables: Application() {
         editor.putBoolean("auto_ping", autoPing)
         editor.apply()
     }
+    // Получить параметр количества кодов в файле.
+    fun getQuantityInFile(): Int {
+        return sharedPreferences.getInt("quantity_in_file", 250000)
+    }
+    // Сохранить параметр количества кодов в файле.
+    fun setQuantityInFile(quantityInFile: Int) {
+        editor.putInt("quantity_in_file", quantityInFile)
+        editor.apply()
+    }
+    // Получить id бота.
+    fun getIdBot(): String {
+        return sharedPreferences.getString("bot_id",
+            "")?: ""
+    }
+    // Получить id чата.
+    fun getIdChat(): String {
+        return sharedPreferences.getString("chat_id", "")?: ""
+    }
 }
