@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,6 +45,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    // Плагин http.
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
     // Плагин бота.
     implementation("com.github.pengrad:java-telegram-bot-api:6.9.1")
     testImplementation("junit:junit:4.13.2")

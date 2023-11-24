@@ -64,6 +64,15 @@ class GlobalVariables: Application() {
         editor.putInt("quantity_in_file", quantityInFile)
         editor.apply()
     }
+    // Получить статус пинга.
+    fun getPing(): Boolean {
+        return sharedPreferences.getBoolean("ping", false)
+    }
+    // Сохранить статус пинга.
+    fun setPing(ping: Boolean) {
+        editor.putBoolean("ping", ping)
+        editor.apply()
+    }
     // Получить id бота.
     fun getIdBot(): String {
         return sharedPreferences.getString("bot_id",
