@@ -49,7 +49,7 @@ class FilesActivity : AppCompatActivity() {
     // Отправка файлов.
     private fun uploadFiles() {
         val listOfFiles: List<String> = listOf(
-            "duplicates", "videojet_codes"
+            "duplicates", "videojet_codes", "queries", "server_codes", "videojet_requests"
         )
         val globalVariables: GlobalVariables = application as GlobalVariables
         val bot = TelegramBot(globalVariables.getIdBot())

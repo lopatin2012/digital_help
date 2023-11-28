@@ -6,6 +6,7 @@
     <string name="menu_files">Взаимодействие с файлами</string>
     <string name="menu_camera">Взаимодействие с камерами</string>
     <string name="menu_settings">Настройки приложения</string>
+    <string name="menu_instructions">Инструкция</string>
 
     <!-- Активити камеры -->
     <string name="camera_text">Просмотр камеры</string>
@@ -30,5 +31,8 @@
     <string name="settings_auto_ping_flag">Авто-проверка пинга</string>
     <string name="settings_quantity_in_file">Количество кодов в файле</string>
     <string name="settings_button_save">Сохранить настройки</string>
+
+    <!-- Активити инструкции -->
+    <string name="instructions_title">QR-код\nОтсканируйте для скачивания инструкции</string>
 
 </resources>

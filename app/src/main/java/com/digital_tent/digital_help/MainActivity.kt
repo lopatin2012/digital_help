@@ -39,6 +39,11 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, CameraActivity::class.java)
         startActivity(intent)
     }
+    // Запустить активити с qr-кодом инструкции.
+    fun goToQRInstruction(view: View) {
+        val intent = Intent(this@MainActivity, InstructionsActivity::class.java)
+        startActivity(intent)
+    }
     // Проверка доступа на запись/чтение файлов.
     private fun requestWritePermission() {
         ActivityCompat.requestPermissions(
