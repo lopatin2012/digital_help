@@ -69,7 +69,9 @@ class FilesActivity : AppCompatActivity() {
                 for (fileName in listOfFiles) {
                     fileCompression(fileName)
                     val filePath = File("/storage/emulated/0/temp_$fileName.txt")
-                    bot.execute(SendDocument(globalVariables.getIdChat(), filePath))
+                    if (filePath.isFile) {
+                        bot.execute(SendDocument(globalVariables.getIdChat(), filePath))
+                    }
                 }
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
