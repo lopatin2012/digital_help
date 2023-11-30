@@ -17,7 +17,12 @@ import java.io.File
 import java.io.FileReader
 import java.io.IOException
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
+import android.os.Environment
+import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import com.pengrad.telegrambot.request.SendDocument
 import java.io.Writer
@@ -38,7 +43,25 @@ class FilesActivity : AppCompatActivity() {
 
         // Отправка файлов по нажатию на кнопку.
         buttonUpload.setOnClickListener {
-            uploadFiles()
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Если разрешение не было предоставлено, запрашиваем его у пользователя
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    permissionWriteInStorage
+                )
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    permissionWriteInStorage
+                )
+                uploadFiles()
+            }
         }
         // Удаление файлов по нажатию на кнопку.
         buttonDelete.setOnClickListener {
@@ -49,7 +72,7 @@ class FilesActivity : AppCompatActivity() {
     // Отправка файлов.
     private fun uploadFiles() {
         val listOfFiles: List<String> = listOf(
-            "duplicates", "videojet_codes", "queries", "server_codes", "videojet_requests"
+            "duplicates", "videojet_codes"
         )
         val globalVariables: GlobalVariables = application as GlobalVariables
         val bot = TelegramBot(globalVariables.getIdBot())
@@ -90,16 +113,20 @@ class FilesActivity : AppCompatActivity() {
     private fun fileCompression(fileName: String) {
         val sourceFile = File("/storage/emulated/0/$fileName.txt")
         val globalVariables: GlobalVariables = application as GlobalVariables
-        val quantityInFile: Int = globalVariables.getQuantityInFile()
+        val quantityInFile = globalVariables.getQuantityInFile()
         val targetFile = File("/storage/emulated/0/temp_" + sourceFile.name)
+
         try {
-            val listOfCodes = sourceFile.readText().split("\n")
-            if (listOfCodes.size <= quantityInFile) {
-                    targetFile.writeText(listOfCodes.joinToString("\n"), Charsets.UTF_8)
+            val listOfCodes = sourceFile.bufferedReader().readLines()
+
+            val subList = if (listOfCodes.size > quantityInFile) {
+                listOfCodes.subList(listOfCodes.size - quantityInFile, listOfCodes.size)
             } else {
-                val subList =
-                    listOfCodes.subList(listOfCodes.size - quantityInFile, listOfCodes.size)
-                targetFile.writeText(subList.joinToString("\n"), Charsets.UTF_8)
+                listOfCodes
+            }
+
+            targetFile.bufferedWriter().use { writer ->
+                writer.write(subList.joinToString("\n"))
             }
         } catch (e: IOException) {
             e.printStackTrace()
@@ -108,17 +135,31 @@ class FilesActivity : AppCompatActivity() {
 
     // Проверка доступа на запись/чтение файлов.
     private fun requestWritePermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            permissionWriteInStorage
-        )
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
+                permissionWriteInStorage
+            )
+        } else {
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent()
+                intent.action = Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
+                val uri = Uri.fromParts("package", this.packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+        }
     }
 
     // Удаление файлов
     private fun deleteFiles() {
         val listOfFiles: List<String> = listOf(
-            "duplicates", "videojet_codes", "temp_duplicates", "temp_videojet_codes")
+            "duplicates", "videojet_codes", "temp_duplicates", "temp_videojet_codes",
+            "queries", "server_codes", "videojet_requests"
+        )
 
         CoroutineScope(Dispatchers.IO).launch {
             for (fileName in listOfFiles) {
