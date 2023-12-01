@@ -57,7 +57,7 @@ class GlobalVariables: Application() {
     }
     // Получить параметр количества кодов в файле.
     fun getQuantityInFile(): Int {
-        return sharedPreferences.getInt("quantity_in_file", 250000)
+        return sharedPreferences.getInt("quantity_in_file", 200000)
     }
     // Сохранить параметр количества кодов в файле.
     fun setQuantityInFile(quantityInFile: Int) {

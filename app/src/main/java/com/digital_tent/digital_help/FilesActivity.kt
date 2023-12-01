@@ -25,6 +25,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import com.pengrad.telegrambot.request.SendDocument
+import java.io.BufferedWriter
+import java.io.FileWriter
+import java.io.RandomAccessFile
 import java.io.Writer
 import java.nio.file.Files
 
@@ -69,7 +72,7 @@ class FilesActivity : AppCompatActivity() {
         }
     }
 
-    // Отправка файлов.
+    // Отправка файлов.  "duplicates", "videojet_codes"
     private fun uploadFiles() {
         val listOfFiles: List<String> = listOf(
             "duplicates", "videojet_codes"
@@ -77,12 +80,12 @@ class FilesActivity : AppCompatActivity() {
         val globalVariables: GlobalVariables = application as GlobalVariables
         val bot = TelegramBot(globalVariables.getIdBot())
         CoroutineScope(Dispatchers.IO).launch {
-            bot.execute(
-                SendMessage(
-                    globalVariables.getIdChat(), "Отправка файлов с терминала: "
-                            + globalVariables.getTerminalName()
-                )
-            )
+//            bot.execute(
+//                SendMessage(
+//                    globalVariables.getIdChat(), "Отправка файлов с терминала: "
+//                            + globalVariables.getTerminalName()
+//                )
+//            )
             if (ContextCompat.checkSelfPermission(
                     this@FilesActivity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -90,10 +93,10 @@ class FilesActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_GRANTED
             ) {
                 for (fileName in listOfFiles) {
-                    fileCompression(fileName)
-                    val filePath = File("/storage/emulated/0/temp_$fileName.txt")
-                    if (filePath.isFile) {
-                        bot.execute(SendDocument(globalVariables.getIdChat(), filePath))
+                    if (File("/storage/emulated/0/$fileName.txt").exists()) {
+                        fileCompression(fileName)
+                        val filePath = File("/storage/emulated/0/temp_$fileName.txt")
+//                        bot.execute(SendDocument(globalVariables.getIdChat(), filePath))
                     }
                 }
             } else {
@@ -110,24 +113,38 @@ class FilesActivity : AppCompatActivity() {
     }
 
     // Сжатие файлов до желаемого размера строк.
+    // Проверяем наличие символа переноса, и если есть, то записываем строку в список.
     private fun fileCompression(fileName: String) {
         val sourceFile = File("/storage/emulated/0/$fileName.txt")
+        val targetFile = BufferedWriter(FileWriter("/storage/emulated/0/temp_${sourceFile.name}"))
         val globalVariables: GlobalVariables = application as GlobalVariables
         val quantityInFile = globalVariables.getQuantityInFile()
-        val targetFile = File("/storage/emulated/0/temp_" + sourceFile.name)
+        val lines = mutableListOf<String>()
+        var counter = 0
 
+        RandomAccessFile(sourceFile, "r").use { file ->
+            val sizeFile = file.length()
+            var position = sizeFile - 1
+
+            while (counter < quantityInFile && position > 0) {
+                file.seek(position)
+                val byte = file.readByte()
+                if (byte == 10.toByte()) {
+                    val line = file.readLine()?.trim()
+                    if (line != null) {
+                        counter += 1
+                        lines.add(line + "\n")
+                    }
+                }
+                position -= 1
+            }
+        }
         try {
-            val listOfCodes = sourceFile.bufferedReader().readLines()
-
-            val subList = if (listOfCodes.size > quantityInFile) {
-                listOfCodes.subList(listOfCodes.size - quantityInFile, listOfCodes.size)
-            } else {
-                listOfCodes
+            lines.reverse()
+            lines.forEach { line ->
+                targetFile.write(line)
             }
-
-            targetFile.bufferedWriter().use { writer ->
-                writer.write(subList.joinToString("\n"))
-            }
+            targetFile.close()
         } catch (e: IOException) {
             e.printStackTrace()
         }
