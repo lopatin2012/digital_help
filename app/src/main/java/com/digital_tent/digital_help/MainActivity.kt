@@ -67,6 +67,13 @@ class MainActivity : AppCompatActivity() {
                 val uri = Uri.fromParts("package", this.packageName, null)
                 intent.data = uri
                 startActivity(intent)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    permissionWriteInStorage
+                )
             }
         }
     }
